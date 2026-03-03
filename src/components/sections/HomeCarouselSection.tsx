@@ -46,23 +46,23 @@ const HomeCarouselSection: React.FC = () => {
   const slides = useMemo<Slide[]>(
     () => [
       {
-        title: "Soluções digitais.",
-        subtitle: "Acesse dados confiáveis em tempo real para impulsionar seu negócio.",
+        title: "Dados que geram resultado.",
+        subtitle: "Consultas em tempo real com precisão e velocidade para acelerar suas decisões estratégicas.",
         image: slide02,
       },
       {
-        title: "Ferramentas para Empresas",
-        subtitle: "Plataforma completa com módulos de consulta e gestão empresarial.",
+        title: "Inteligência para o seu negócio.",
+        subtitle: "Módulos integrados de análise, validação e gestão em uma única plataforma.",
         image: slide01,
       },
       {
-        title: "Ideal para empresas!",
-        subtitle: "Planos flexíveis que acompanham o crescimento da sua empresa.",
+        title: "Escale com confiança.",
+        subtitle: "Planos sob medida que acompanham cada fase do crescimento da sua operação.",
         image: slide03,
       },
       {
-        title: "Tecnologia em decisões",
-        subtitle: "Inteligência de dados com segurança e conformidade LGPD.",
+        title: "Segurança em cada consulta.",
+        subtitle: "Infraestrutura robusta com conformidade LGPD e criptografia de ponta a ponta.",
         image: slide04,
       },
     ],
