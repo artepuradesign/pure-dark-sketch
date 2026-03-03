@@ -167,8 +167,8 @@ const MenuSuperior = () => {
                 {liquidGlassConfig.enabled ? (
                   <>
                     <LiquidGlassButton
-                      variant="primary"
-                      className="text-sm px-4 py-2"
+                      variant="outline"
+                      className="text-sm px-4 py-2 !bg-[hsl(262,83%,58%)] !border-[hsl(262,83%,58%)] hover:!bg-[hsl(262,83%,48%)]"
                       onClick={() => navigate('/registration')}
                       ariaLabel="Cadastre-se"
                     >
@@ -186,7 +186,7 @@ const MenuSuperior = () => {
                 ) : (
                   <>
                     <Link to="/registration">
-                      <Button size="sm" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold">
+                      <Button size="sm" className="bg-[hsl(262,83%,58%)] hover:bg-[hsl(262,83%,48%)] text-white font-semibold">
                         Cadastre-se
                       </Button>
                     </Link>
