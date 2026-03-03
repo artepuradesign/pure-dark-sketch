@@ -154,13 +154,13 @@ const HomeCarouselSection: React.FC = () => {
                         "h-full flex py-10 sm:py-12",
                         isMatrix
                           ? "items-center justify-center"
-                          : "items-end sm:items-center pb-16 sm:pb-0"
+                          : "items-start justify-start pt-16 sm:pt-20"
                       )}>
                         <div className={cn(
                           "w-full",
                           isMatrix
                             ? "max-w-2xl text-center"
-                            : "sm:max-w-xl text-center sm:text-left"
+                            : "sm:max-w-xl text-left"
                         )}>
                           <div className={cn(
                             "mx-auto max-w-[520px]",
