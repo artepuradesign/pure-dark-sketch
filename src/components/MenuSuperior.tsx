@@ -170,9 +170,9 @@ const MenuSuperior = () => {
                       variant="primary"
                       className="text-sm px-4 py-2"
                       onClick={() => navigate('/registration')}
-                      ariaLabel="Testar grátis"
+                      ariaLabel="Cadastre-se"
                     >
-                      Testar grátis
+                      Cadastre-se
                     </LiquidGlassButton>
                     <LiquidGlassButton
                       variant="outline"
@@ -187,7 +187,7 @@ const MenuSuperior = () => {
                   <>
                     <Link to="/registration">
                       <Button size="sm" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold">
-                        Testar grátis
+                        Cadastre-se
                       </Button>
                     </Link>
                     <Link to="/login">
