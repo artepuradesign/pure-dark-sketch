@@ -168,7 +168,7 @@ const MenuSuperior = () => {
                   <>
                     <LiquidGlassButton
                       variant="outline"
-                      className="text-sm px-4 py-2 !bg-[hsl(262,83%,58%)] !border-[hsl(262,83%,58%)] hover:!bg-[hsl(262,83%,48%)]"
+                      className="text-sm px-4 py-2 !bg-[hsl(262,83%,58%)] !border-[hsl(262,83%,58%)] hover:!bg-[hsl(262,83%,48%)] !text-white"
                       onClick={() => navigate('/registration')}
                       ariaLabel="Cadastre-se"
                     >
