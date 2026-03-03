@@ -175,8 +175,8 @@ const MenuSuperior = () => {
                       Cadastre-se
                     </LiquidGlassButton>
                     <LiquidGlassButton
-                      variant="outline"
-                      className="text-sm px-4 py-2"
+                      variant="primary"
+                      className="text-sm px-4 py-2 !bg-secondary !hover:bg-secondary/90"
                       onClick={() => navigate('/login')}
                       ariaLabel="Entrar"
                     >
@@ -191,7 +191,7 @@ const MenuSuperior = () => {
                       </Button>
                     </Link>
                     <Link to="/login">
-                      <Button size="sm" variant="default" className="font-semibold">
+                      <Button size="sm" className="bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold">
                         Entrar
                       </Button>
                     </Link>
