@@ -213,9 +213,9 @@ const HomeCarouselSection: React.FC = () => {
                                     variant="primary"
                                     className="w-full sm:w-auto"
                                     onClick={() => navigate("/registration")}
-                                    ariaLabel="Testar grátis com 10 consultas"
+                                    ariaLabel="Cadastre-se"
                                   >
-                                    Testar grátis (10 consultas)
+                                    Cadastre-se
                                   </LiquidGlassButton>
                                   <LiquidGlassButton
                                     variant="outline"
@@ -233,7 +233,7 @@ const HomeCarouselSection: React.FC = () => {
                                     className="w-full sm:w-auto bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold"
                                     onClick={() => navigate("/registration")}
                                   >
-                                    Testar grátis (10 consultas)
+                                    Cadastre-se
                                   </Button>
                                   <Button
                                     size="lg"
