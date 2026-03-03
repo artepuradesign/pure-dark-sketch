@@ -1,21 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Autoplay from "embla-carousel-autoplay";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
-import { Button } from "@/components/ui/button";
-import LiquidGlassButton from "@/components/ui/LiquidGlassButton";
 import { cn } from "@/lib/utils";
-import { FileSearch, ShieldCheck, Zap } from "lucide-react";
+import { Search, ArrowRight, Zap, ShieldCheck, FileSearch } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useSiteTheme } from "@/contexts/SiteThemeContext";
-import { useLiquidGlass } from "@/contexts/LiquidGlassContext";
 
 import slide01 from "@/assets/home-carousel-01.jpg";
 import slide02 from "@/assets/home-carousel-02.jpg";
@@ -28,26 +16,18 @@ type Slide = {
   image: string;
 };
 
-type Benefit = {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-};
-
 const HomeCarouselSection: React.FC = () => {
   const navigate = useNavigate();
   const { currentVisualTheme } = useSiteTheme();
-  const isMatrix = currentVisualTheme === 'matrix';
-  const { config: liquidGlassConfig } = useLiquidGlass();
-  const glassEnabled = liquidGlassConfig.enabled;
-  const [api, setApi] = useState<CarouselApi | null>(null);
+  const isMatrix = currentVisualTheme === "matrix";
   const [active, setActive] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
 
   const slides = useMemo<Slide[]>(
     () => [
       {
         title: "Dados que geram resultado.",
-        subtitle: "Consultas em tempo real com precisão e velocidade para acelerar suas decisões estratégicas.",
+        subtitle: "Consultas em tempo real com precisão e velocidade para decisões estratégicas.",
         image: slide02,
       },
       {
@@ -69,175 +49,307 @@ const HomeCarouselSection: React.FC = () => {
     []
   );
 
-  const benefits = useMemo<Benefit[]>(
-    () => [
-      {
-        icon: <Zap className="h-4 w-4 text-primary" aria-hidden="true" />,
-        title: "Rápido",
-        description: "Respostas instantâneas",
-      },
-      {
-        icon: <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />,
-        title: "Seguro",
-        description: "LGPD + criptografia",
-      },
-      {
-        icon: <FileSearch className="h-4 w-4 text-primary" aria-hidden="true" />,
-        title: "Completo",
-        description: "Consultas + módulos empresariais",
-      },
-    ],
-    []
+  // Auto-advance slides
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActive((prev) => (prev + 1) % slides.length);
+    }, 6500);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const handleSearch = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      if (searchValue.trim()) {
+        navigate(`/login`);
+      }
+    },
+    [searchValue, navigate]
   );
 
-  React.useEffect(() => {
-    if (!api) return;
-    const onSelect = () => setActive(api.selectedScrollSnap());
-    onSelect();
-    api.on("select", onSelect);
-    api.on("reInit", onSelect);
-    return () => { api.off("select", onSelect); };
-  }, [api]);
+  const stats = [
+    { value: "99.9%", label: "Uptime" },
+    { value: "+50", label: "Módulos" },
+    { value: "LGPD", label: "Conformidade" },
+  ];
 
   return (
-    <section aria-label="Destaques" className="w-full">
-      <div className="relative w-full overflow-hidden">
-        <Carousel
-          setApi={setApi}
-          opts={{ loop: true }}
-          plugins={[
-            Autoplay({
-              delay: 6500,
-              stopOnInteraction: true,
-              stopOnMouseEnter: true,
-            }),
-          ]}
-          className="w-full"
-        >
-          <CarouselContent className="ml-0">
-            {slides.map((slide, idx) => (
-              <CarouselItem key={idx} className="pl-0">
-                <div className="relative w-full">
-                  <div className="relative">
-                    {/* Image: hidden in matrix theme */}
-                    {!isMatrix && (
-                      <img
-                        src={slide.image}
-                        alt={slide.title}
-                        loading={idx === 0 ? "eager" : "lazy"}
-                        className={cn(
-                          "w-full object-cover",
-                          "h-[420px] sm:h-[380px] lg:h-[460px]",
-                          "select-none"
-                        )}
-                      />
-                    )}
+    <section aria-label="Hero" className="relative w-full overflow-hidden">
+      {/* Background images with crossfade */}
+      <div className="absolute inset-0">
+        {slides.map((slide, idx) => (
+          <motion.div
+            key={idx}
+            className="absolute inset-0"
+            initial={false}
+            animate={{ opacity: idx === active ? 1 : 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+          >
+            {!isMatrix && (
+              <img
+                src={slide.image}
+                alt=""
+                loading={idx === 0 ? "eager" : "lazy"}
+                className="w-full h-full object-cover scale-105"
+              />
+            )}
+          </motion.div>
+        ))}
 
-                    {/* Spacer when no image (matrix) */}
-                    {isMatrix && (
-                      <div className="w-full h-[420px] sm:h-[380px] lg:h-[460px]" />
-                    )}
+        {/* Overlay gradients */}
+        {!isMatrix ? (
+          <>
+            <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+            <div className="absolute inset-0 z-[1] bg-gradient-to-t from-black/60 via-transparent to-black/30" />
+          </>
+        ) : (
+          <div className="absolute inset-0 z-[1] bg-black/90" />
+        )}
 
-                    {/* Gradients: hidden in matrix theme */}
-                    {!isMatrix && (
-                      <>
-                        <div className="absolute inset-0 z-[1] hidden sm:block bg-gradient-to-r from-white/85 via-white/45 to-transparent dark:from-background/95 dark:via-background/60 dark:to-transparent" />
-                        <div className="absolute inset-0 z-[1] sm:hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent" />
-                      </>
-                    )}
+        {/* Surreal glow accents */}
+        <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+          <motion.div
+            animate={{ x: [0, 30, 0], y: [0, -20, 0], scale: [1, 1.1, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+            className={cn(
+              "absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full blur-[120px] opacity-30",
+              isMatrix ? "bg-green-500" : "bg-[hsl(262,83%,58%)]"
+            )}
+          />
+          <motion.div
+            animate={{ x: [0, -20, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }}
+            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+            className={cn(
+              "absolute -bottom-40 -right-40 w-[600px] h-[600px] rounded-full blur-[140px] opacity-20",
+              isMatrix ? "bg-green-400" : "bg-secondary"
+            )}
+          />
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-[3] min-h-[520px] sm:min-h-[560px] lg:min-h-[600px] flex items-center">
+        <div className="container mx-auto px-4 sm:px-6 max-w-6xl w-full py-16 sm:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            {/* Left: Text + Search */}
+            <div className="space-y-6">
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase",
+                    isMatrix
+                      ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                      : "bg-white/10 text-white/90 border border-white/15 backdrop-blur-sm"
+                  )}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                  Plataforma Online
+                </span>
+              </motion.div>
+
+              {/* Title */}
+              <AnimatePresence mode="wait">
+                <motion.h1
+                  key={`title-${active}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -15 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.1]"
+                >
+                  {slides[active].title}
+                </motion.h1>
+              </AnimatePresence>
+
+              {/* Subtitle with glass */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={`sub-${active}`}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className={cn(
+                    "inline-block rounded-xl px-4 py-3",
+                    isMatrix
+                      ? "bg-black/40 border border-green-500/15"
+                      : "bg-white/10 border border-white/15"
+                  )}
+                  style={{
+                    backdropFilter: "blur(20px) saturate(1.4)",
+                    WebkitBackdropFilter: "blur(20px) saturate(1.4)",
+                  }}
+                >
+                  <p className="text-sm sm:text-base text-white/75 leading-relaxed max-w-[44ch]">
+                    {slides[active].subtitle}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Search bar */}
+              <motion.form
+                onSubmit={handleSearch}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className={cn(
+                  "flex items-center gap-0 max-w-md rounded-2xl overflow-hidden",
+                  isMatrix
+                    ? "bg-black/50 border border-green-500/20"
+                    : "bg-white/10 border border-white/20"
+                )}
+                style={{
+                  backdropFilter: "blur(24px) saturate(1.5)",
+                  WebkitBackdropFilter: "blur(24px) saturate(1.5)",
+                }}
+              >
+                <div className="flex items-center flex-1 px-4 gap-3">
+                  <Search className="h-4 w-4 text-white/50 shrink-0" />
+                  <input
+                    type="text"
+                    placeholder="Digite um CPF, CNPJ ou nome..."
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    className="flex-1 bg-transparent border-none outline-none text-sm text-white placeholder:text-white/40 py-3.5"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className={cn(
+                    "h-full px-5 py-3.5 flex items-center gap-2 text-sm font-semibold text-white transition-colors shrink-0",
+                    isMatrix
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "bg-secondary hover:bg-secondary/80"
+                  )}
+                >
+                  Consultar
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </motion.form>
+
+              {/* Stats */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="flex items-center gap-6 pt-2"
+              >
+                {stats.map((stat, i) => (
+                  <div key={i} className="flex flex-col">
+                    <span
+                      className={cn(
+                        "text-lg sm:text-xl font-bold",
+                        isMatrix ? "text-green-400" : "text-white"
+                      )}
+                    >
+                      {stat.value}
+                    </span>
+                    <span className="text-[11px] sm:text-xs text-white/50 uppercase tracking-wider">
+                      {stat.label}
+                    </span>
                   </div>
+                ))}
+              </motion.div>
+            </div>
 
-                  {/* Text content */}
-                  <div className="absolute inset-0 z-[2] pointer-events-none">
-                    <div className="container mx-auto px-4 sm:px-6 max-w-6xl h-full pointer-events-auto">
-                      <div className={cn(
-                        "h-full flex py-10 sm:py-12",
+            {/* Right: Floating glass cards */}
+            <div className="hidden lg:flex flex-col items-center justify-center relative">
+              {/* Feature cards */}
+              {[
+                {
+                  icon: <Zap className="h-5 w-5" />,
+                  title: "Velocidade",
+                  desc: "Respostas em milissegundos",
+                  delay: 0.3,
+                  pos: "top-0 right-0",
+                },
+                {
+                  icon: <ShieldCheck className="h-5 w-5" />,
+                  title: "Segurança",
+                  desc: "Dados criptografados",
+                  delay: 0.5,
+                  pos: "top-28 left-0",
+                },
+                {
+                  icon: <FileSearch className="h-5 w-5" />,
+                  title: "Precisão",
+                  desc: "Dados atualizados em tempo real",
+                  delay: 0.7,
+                  pos: "bottom-0 right-8",
+                },
+              ].map((card, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.6, delay: card.delay, ease: "easeOut" }}
+                  whileHover={{ y: -4, scale: 1.03 }}
+                  className={cn(
+                    "absolute w-[240px] rounded-2xl p-4 cursor-default",
+                    card.pos,
+                    isMatrix
+                      ? "bg-black/50 border border-green-500/20"
+                      : "bg-white/10 border border-white/15"
+                  )}
+                  style={{
+                    backdropFilter: "blur(24px) saturate(1.5)",
+                    WebkitBackdropFilter: "blur(24px) saturate(1.5)",
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={cn(
+                        "w-10 h-10 rounded-xl flex items-center justify-center",
                         isMatrix
-                          ? "items-center justify-center"
-                          : "items-start justify-start pt-8 sm:pt-10"
-                      )}>
-                        <div className={cn(
-                          "w-full",
-                          isMatrix
-                            ? "max-w-2xl text-center"
-                            : "sm:max-w-xl text-left"
-                        )}>
-                          <div className="max-w-[520px]">
-                            <AnimatePresence mode="wait">
-                              <motion.h1
-                                key={`title-${active}`}
-                                initial={{ opacity: 0, y: 14 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.35 }}
-                                className="text-[22px] leading-tight sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground drop-shadow-md"
-                              >
-                                {slide.title}
-                              </motion.h1>
-                            </AnimatePresence>
-
-                            <AnimatePresence mode="wait">
-                              <motion.div
-                                key={`subtitle-${active}`}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: -8 }}
-                                transition={{ duration: 0.35, delay: 0.05 }}
-                                className={cn(
-                                  "mt-3 inline-block rounded-xl px-4 py-2.5",
-                                  isMatrix
-                                    ? "bg-black/40 backdrop-blur-xl border border-green-500/20 shadow-[0_8px_32px_rgba(0,255,0,0.08)]"
-                                    : "bg-background/30 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] dark:bg-white/5 dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]",
-                                  isMatrix ? "" : "hidden sm:inline-block"
-                                )}
-                                style={{
-                                  backdropFilter: 'blur(20px) saturate(1.5)',
-                                  WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
-                                }}
-                              >
-                                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-[42ch]">
-                                  {slide.subtitle}
-                                </p>
-                              </motion.div>
-                            </AnimatePresence>
-                          </div>
-                        </div>
-                      </div>
+                          ? "bg-green-500/15 text-green-400"
+                          : "bg-secondary/20 text-secondary"
+                      )}
+                    >
+                      {card.icon}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white">{card.title}</p>
+                      <p className="text-xs text-white/50">{card.desc}</p>
                     </div>
                   </div>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+                </motion.div>
+              ))}
 
-          {/* Arrows */}
-          <CarouselPrevious
-            className="hidden sm:flex left-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/70 hover:bg-background/85 border-border/60"
-            variant="outline"
-          />
-          <CarouselNext
-            className="hidden sm:flex right-3 top-1/2 -translate-y-1/2 h-10 w-10 rounded-full bg-background/70 hover:bg-background/85 border-border/60"
-            variant="outline"
-          />
+              {/* Central orb glow */}
+              <motion.div
+                animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.6, 0.4] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className={cn(
+                  "w-48 h-48 rounded-full blur-[60px]",
+                  isMatrix ? "bg-green-500/30" : "bg-[hsl(262,83%,58%)]/25"
+                )}
+              />
+            </div>
+          </div>
 
-          {/* Dots */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+          {/* Slide indicators */}
+          <div className="flex items-center gap-2 mt-10">
             {slides.map((_, i) => (
               <button
                 key={i}
                 type="button"
                 aria-label={`Ir para slide ${i + 1}`}
-                onClick={() => api?.scrollTo(i)}
+                onClick={() => setActive(i)}
                 className={cn(
-                  "h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full transition-all",
+                  "h-1 rounded-full transition-all duration-500",
                   i === active
-                    ? "bg-primary"
-                    : "bg-muted-foreground/40 hover:bg-muted-foreground/60"
+                    ? cn("w-8", isMatrix ? "bg-green-400" : "bg-white")
+                    : "w-2 bg-white/30 hover:bg-white/50"
                 )}
               />
             ))}
           </div>
-        </Carousel>
+        </div>
       </div>
     </section>
   );
