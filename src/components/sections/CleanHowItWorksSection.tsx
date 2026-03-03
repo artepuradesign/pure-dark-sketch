@@ -1,116 +1,233 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { UserPlus, ListChecks, CreditCard, Search, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
-import { useLiquidGlass } from '@/contexts/LiquidGlassContext';
-import LiquidGlassButton from '@/components/ui/LiquidGlassButton';
+import { useSiteTheme } from '@/contexts/SiteThemeContext';
 
 const steps = [
   {
     icon: UserPlus,
+    number: '01',
     title: 'Crie sua conta',
-    desc: 'Cadastro em menos de 1 minuto com e-mail e senha',
-    illustration: '👤',
+    desc: 'Cadastro rápido e seguro em menos de 1 minuto.',
+    accent: 'from-[hsl(262,83%,58%)] to-[hsl(280,80%,55%)]',
+    matrixAccent: 'from-green-500 to-green-400',
   },
   {
     icon: ListChecks,
+    number: '02',
     title: 'Escolha seu plano',
-    desc: 'Selecione o plano ideal para suas necessidades',
-    illustration: '📋',
+    desc: 'Planos flexíveis que se adaptam à sua operação.',
+    accent: 'from-secondary to-[hsl(160,70%,40%)]',
+    matrixAccent: 'from-green-400 to-emerald-500',
   },
   {
     icon: CreditCard,
-    title: 'Pague ou recarregue',
-    desc: 'Assine um plano ou recarregue saldo para economizar',
-    illustration: '💳',
+    number: '03',
+    title: 'Recarregue ou assine',
+    desc: 'PIX, boleto ou cartão. Saldo disponível na hora.',
+    accent: 'from-[hsl(200,80%,50%)] to-[hsl(220,75%,55%)]',
+    matrixAccent: 'from-emerald-500 to-green-500',
   },
   {
     icon: Search,
-    title: 'Faça suas consultas',
-    desc: 'Acesse informações completas em segundos',
-    illustration: '🔍',
+    number: '04',
+    title: 'Consulte em segundos',
+    desc: 'Acesse dados completos com rapidez e precisão.',
+    accent: 'from-[hsl(340,75%,55%)] to-[hsl(320,70%,50%)]',
+    matrixAccent: 'from-green-500 to-lime-500',
   },
 ];
 
 const CleanHowItWorksSection: React.FC = () => {
   const navigate = useNavigate();
-  const { config: liquidGlassConfig } = useLiquidGlass();
+  const { currentVisualTheme } = useSiteTheme();
+  const isMatrix = currentVisualTheme === 'matrix';
+
   return (
-    <section className="py-10 sm:py-16 lg:py-24 relative overflow-hidden bg-card border-y border-border/40">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+    <section className="relative py-16 sm:py-24 lg:py-32 overflow-hidden bg-background">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className={cn(
+            "absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full blur-[160px] opacity-15",
+            isMatrix ? "bg-green-500" : "bg-[hsl(262,83%,58%)]"
+          )}
+        />
+        <div
+          className={cn(
+            "absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full blur-[120px] opacity-10",
+            isMatrix ? "bg-green-400" : "bg-secondary"
+          )}
+        />
+      </div>
 
       <div className="container mx-auto px-4 sm:px-6 max-w-6xl relative z-10">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="text-center mb-8 sm:mb-14"
+          transition={{ duration: 0.5 }}
+          className="text-center mb-16 sm:mb-20"
         >
-          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-primary mb-2">
+          <span
+            className={cn(
+              "inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest mb-4",
+              isMatrix
+                ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                : "bg-[hsl(262,83%,58%)]/10 text-[hsl(262,83%,58%)] border border-[hsl(262,83%,58%)]/20"
+            )}
+          >
+            <span
+              className={cn(
+                "w-1.5 h-1.5 rounded-full animate-pulse",
+                isMatrix ? "bg-green-400" : "bg-[hsl(262,83%,58%)]"
+              )}
+            />
             Passo a passo
           </span>
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-2">Como funciona</h2>
-          <p className="text-sm sm:text-base text-muted-foreground max-w-md mx-auto">4 passos simples para começar a consultar</p>
+
+          <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-foreground tracking-tight mt-3">
+            Como funciona
+          </h2>
+          <p className="text-muted-foreground mt-3 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            Comece a consultar em minutos. Quatro etapas simples para transformar dados em decisões.
+          </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Connection line - desktop */}
-          <div className="hidden lg:block absolute top-24 left-[12%] right-[12%] h-0.5 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 z-0" />
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-            {steps.map((step, i) => (
+        {/* Steps grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-5">
+          {steps.map((step, i) => {
+            const Icon = step.icon;
+            return (
               <motion.div
-                key={step.title}
-                initial={{ opacity: 0, y: 24 }}
+                key={step.number}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: i * 0.12 }}
-                className="relative flex flex-col items-center text-center"
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                whileHover={{ y: -6 }}
+                className="group relative"
               >
-                {/* Step number badge */}
-                <div className="relative z-10 mb-3 sm:mb-4">
-                  <div className="h-14 w-14 sm:h-20 sm:w-20 rounded-xl sm:rounded-2xl bg-card border-2 border-primary/20 shadow-lg flex items-center justify-center text-2xl sm:text-4xl">
-                    <span>{step.illustration}</span>
+                {/* Connector line - desktop only */}
+                {i < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-10 left-[60%] w-[calc(100%-20%)] h-px">
+                    <div
+                      className={cn(
+                        "w-full h-full",
+                        isMatrix
+                          ? "bg-gradient-to-r from-green-500/30 to-green-500/10"
+                          : "bg-gradient-to-r from-border to-transparent"
+                      )}
+                    />
+                    <motion.div
+                      className={cn(
+                        "absolute top-0 left-0 h-full w-1/2",
+                        isMatrix
+                          ? "bg-gradient-to-r from-green-400/60 to-transparent"
+                          : "bg-gradient-to-r from-[hsl(262,83%,58%)]/40 to-transparent"
+                      )}
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.5 + i * 0.15 }}
+                      style={{ transformOrigin: 'left' }}
+                    />
                   </div>
-                  <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 h-5 w-5 sm:h-7 sm:w-7 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-xs font-bold flex items-center justify-center shadow-md">
-                    {i + 1}
-                  </span>
-                </div>
+                )}
 
-                <h3 className="font-semibold text-foreground text-sm sm:text-lg mb-1 sm:mb-2">{step.title}</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-[160px] sm:max-w-[200px]">{step.desc}</p>
+                {/* Card */}
+                <div
+                  className={cn(
+                    "relative rounded-2xl p-6 h-full transition-all duration-300",
+                    "border border-border/50 hover:border-border",
+                    isMatrix
+                      ? "bg-black/30 hover:bg-black/50"
+                      : "bg-card/50 hover:bg-card"
+                  )}
+                  style={{
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                  }}
+                >
+                  {/* Number + Icon row */}
+                  <div className="flex items-center justify-between mb-5">
+                    <div
+                      className={cn(
+                        "w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-lg",
+                        isMatrix ? step.matrixAccent : step.accent
+                      )}
+                    >
+                      <Icon className="h-5 w-5 text-white" />
+                    </div>
+                    <span
+                      className={cn(
+                        "text-3xl font-black opacity-10 group-hover:opacity-20 transition-opacity select-none",
+                        isMatrix ? "text-green-400" : "text-foreground"
+                      )}
+                    >
+                      {step.number}
+                    </span>
+                  </div>
+
+                  {/* Text */}
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
+                    {step.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {step.desc}
+                  </p>
+
+                  {/* Bottom accent bar */}
+                  <div className="mt-5 h-0.5 w-full rounded-full overflow-hidden bg-border/30">
+                    <motion.div
+                      className={cn(
+                        "h-full rounded-full bg-gradient-to-r",
+                        isMatrix ? step.matrixAccent : step.accent
+                      )}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: '100%' }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8, delay: 0.3 + i * 0.15, ease: 'easeOut' }}
+                    />
+                  </div>
+                </div>
               </motion.div>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
+        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.5 }}
-          className="text-center mt-12"
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="text-center mt-14 sm:mt-20"
         >
-          {liquidGlassConfig.enabled ? (
-            <LiquidGlassButton
-              variant="primary"
-              className="font-semibold px-8 shadow-lg hover:shadow-xl transition-shadow"
-              onClick={() => navigate('/registration')}
-            >
-              Comece em 1 minuto <ArrowRight className="ml-2 h-4 w-4 inline" />
-            </LiquidGlassButton>
-          ) : (
-            <Button
-              size="lg"
-              className="font-semibold px-8 shadow-lg hover:shadow-xl transition-shadow"
-              onClick={() => navigate('/registration')}
-            >
-              Comece em 1 minuto
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          )}
+          <button
+            onClick={() => navigate('/registration')}
+            className={cn(
+              "inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-sm font-semibold text-white transition-all duration-300",
+              "shadow-lg hover:shadow-xl hover:-translate-y-0.5",
+              isMatrix
+                ? "bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400"
+                : "bg-gradient-to-r from-[hsl(262,83%,58%)] to-[hsl(280,80%,55%)] hover:from-[hsl(262,83%,52%)] hover:to-[hsl(280,80%,50%)]"
+            )}
+            style={{
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+            }}
+          >
+            Comece agora — é grátis
+            <ArrowRight className="h-4 w-4" />
+          </button>
+
+          <p className="text-xs text-muted-foreground mt-4">
+            Sem cartão de crédito. Cancele quando quiser.
+          </p>
         </motion.div>
       </div>
     </section>
