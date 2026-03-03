@@ -206,49 +206,6 @@ const HomeCarouselSection: React.FC = () => {
                               </motion.p>
                             </AnimatePresence>
 
-                            <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row flex-wrap gap-3 justify-center">
-                              {glassEnabled ? (
-                                <>
-                                  <LiquidGlassButton
-                                    variant="primary"
-                                    className="w-full sm:w-auto"
-                                    onClick={() => navigate("/registration")}
-                                    ariaLabel="Cadastre-se"
-                                  >
-                                    Cadastre-se
-                                  </LiquidGlassButton>
-                                  <LiquidGlassButton
-                                    variant="outline"
-                                    className="w-full sm:w-auto"
-                                    onClick={() => navigate("/planos-publicos")}
-                                    ariaLabel="Ver planos disponíveis"
-                                  >
-                                    Ver planos
-                                  </LiquidGlassButton>
-                                </>
-                              ) : (
-                                <>
-                                  <Button
-                                    size="lg"
-                                    className="w-full sm:w-auto bg-secondary hover:bg-secondary/90 text-secondary-foreground font-semibold"
-                                    onClick={() => navigate("/registration")}
-                                  >
-                                    Cadastre-se
-                                  </Button>
-                                  <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className={cn(
-                                      "w-full sm:w-auto font-semibold",
-                                      isMatrix && "border-green-400/60 text-green-400 hover:bg-green-400/10 hover:text-green-300"
-                                    )}
-                                    onClick={() => navigate("/planos-publicos")}
-                                  >
-                                    Ver planos
-                                  </Button>
-                                </>
-                              )}
-                            </div>
                           </div>
                         </div>
                       </div>
