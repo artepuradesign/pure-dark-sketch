@@ -154,7 +154,7 @@ const HomeCarouselSection: React.FC = () => {
                         "h-full flex py-10 sm:py-12",
                         isMatrix
                           ? "items-center justify-center"
-                          : "items-start justify-start pt-16 sm:pt-20"
+                          : "items-start justify-start pt-8 sm:pt-10"
                       )}>
                         <div className={cn(
                           "w-full",
@@ -177,14 +177,6 @@ const HomeCarouselSection: React.FC = () => {
                               WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
                             }}
                           >
-                            <motion.p
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.35 }}
-                              className="text-xs sm:text-sm font-medium text-muted-foreground"
-                            >
-                              Plataforma de consultas
-                            </motion.p>
 
                             <AnimatePresence mode="wait">
                               <motion.h1
