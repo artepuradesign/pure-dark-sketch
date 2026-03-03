@@ -162,22 +162,7 @@ const HomeCarouselSection: React.FC = () => {
                             ? "max-w-2xl text-center"
                             : "sm:max-w-xl text-left"
                         )}>
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                            className={cn(
-                              "max-w-[520px] rounded-2xl p-5 sm:p-6",
-                              isMatrix
-                                ? "sm:max-w-2xl bg-black/40 backdrop-blur-xl border border-green-500/20 shadow-[0_8px_32px_rgba(0,255,0,0.08)]"
-                                : "sm:mx-0 bg-background/30 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] dark:bg-white/5 dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]"
-                            )}
-                            style={{
-                              backdropFilter: 'blur(20px) saturate(1.5)',
-                              WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
-                            }}
-                          >
-
+                          <div className="max-w-[520px]">
                             <AnimatePresence mode="wait">
                               <motion.h1
                                 key={`title-${active}`}
@@ -185,29 +170,37 @@ const HomeCarouselSection: React.FC = () => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.35 }}
-                                className="mt-2 text-[22px] leading-tight sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground"
+                                className="text-[22px] leading-tight sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground drop-shadow-md"
                               >
                                 {slide.title}
                               </motion.h1>
                             </AnimatePresence>
 
                             <AnimatePresence mode="wait">
-                              <motion.p
+                              <motion.div
                                 key={`subtitle-${active}`}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -8 }}
                                 transition={{ duration: 0.35, delay: 0.05 }}
                                 className={cn(
-                                  "mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-[42ch] mx-auto",
-                                  isMatrix ? "" : "sm:mx-0 hidden sm:block"
+                                  "mt-3 inline-block rounded-xl px-4 py-2.5",
+                                  isMatrix
+                                    ? "bg-black/40 backdrop-blur-xl border border-green-500/20 shadow-[0_8px_32px_rgba(0,255,0,0.08)]"
+                                    : "bg-background/30 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] dark:bg-white/5 dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]",
+                                  isMatrix ? "" : "hidden sm:inline-block"
                                 )}
+                                style={{
+                                  backdropFilter: 'blur(20px) saturate(1.5)',
+                                  WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
+                                }}
                               >
-                                {slide.subtitle}
-                              </motion.p>
+                                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-[42ch]">
+                                  {slide.subtitle}
+                                </p>
+                              </motion.div>
                             </AnimatePresence>
-
-                          </motion.div>
+                          </div>
                         </div>
                       </div>
                     </div>
