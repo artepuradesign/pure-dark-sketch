@@ -162,12 +162,21 @@ const HomeCarouselSection: React.FC = () => {
                             ? "max-w-2xl text-center"
                             : "sm:max-w-xl text-left"
                         )}>
-                          <div className={cn(
-                            "mx-auto max-w-[520px]",
-                            isMatrix
-                              ? "sm:max-w-2xl"
-                              : "sm:mx-0 rounded-xl bg-background/55 backdrop-blur-md ring-1 ring-border/60 p-4 sm:p-0 sm:rounded-none sm:bg-transparent sm:backdrop-blur-0 sm:ring-0"
-                          )}>
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                            className={cn(
+                              "max-w-[520px] rounded-2xl p-5 sm:p-6",
+                              isMatrix
+                                ? "sm:max-w-2xl bg-black/40 backdrop-blur-xl border border-green-500/20 shadow-[0_8px_32px_rgba(0,255,0,0.08)]"
+                                : "sm:mx-0 bg-background/30 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12),inset_0_1px_0_rgba(255,255,255,0.15)] dark:bg-white/5 dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.3),inset_0_1px_0_rgba(255,255,255,0.05)]"
+                            )}
+                            style={{
+                              backdropFilter: 'blur(20px) saturate(1.5)',
+                              WebkitBackdropFilter: 'blur(20px) saturate(1.5)',
+                            }}
+                          >
                             <motion.p
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -206,7 +215,7 @@ const HomeCarouselSection: React.FC = () => {
                               </motion.p>
                             </AnimatePresence>
 
-                          </div>
+                          </motion.div>
                         </div>
                       </div>
                     </div>
