@@ -264,10 +264,8 @@ const PublicPlansSection = () => {
           <div
             className={`relative rounded-2xl overflow-hidden h-full flex flex-col transition-all duration-500 plan-card-matrix ${
               isCurrent 
-                ? 'ring-2 ring-primary shadow-2xl shadow-primary/20' 
-                : plan.is_popular 
-                  ? 'shadow-xl shadow-purple-500/15 dark:shadow-purple-500/25' 
-                  : 'shadow-lg hover:shadow-xl'
+                ? 'ring-2 ring-primary' 
+                : ''
             }`}
             style={{
               background: 'linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.9) 100%)',
