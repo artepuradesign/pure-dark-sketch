@@ -269,39 +269,38 @@ const HomeCarouselSection: React.FC = () => {
                 )}
               />
 
-              {/* Feature cards - stacked & aligned */}
+              {/* Feature cards - aligned right with unique entrance animations */}
               {[
                 {
                   icon: <Zap className="h-5 w-5" />,
                   title: "Velocidade",
                   desc: "Respostas em milissegundos",
                   delay: 0.3,
-                  align: "self-end",
+                  initial: { opacity: 0, x: 80, rotate: 5 },
                 },
                 {
                   icon: <ShieldCheck className="h-5 w-5" />,
                   title: "Segurança",
                   desc: "Dados criptografados",
-                  delay: 0.5,
-                  align: "self-start",
+                  delay: 0.6,
+                  initial: { opacity: 0, x: 100, y: 20, scale: 0.85 },
                 },
                 {
                   icon: <FileSearch className="h-5 w-5" />,
                   title: "Precisão",
                   desc: "Dados atualizados em tempo real",
-                  delay: 0.7,
-                  align: "self-center",
+                  delay: 0.9,
+                  initial: { opacity: 0, x: 60, y: 40, rotate: -3 },
                 },
               ].map((card, i) => (
                 <motion.div
                   key={i}
-                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ duration: 0.6, delay: card.delay, ease: "easeOut" }}
-                  whileHover={{ y: -4, scale: 1.03 }}
+                  initial={card.initial}
+                  animate={{ opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.7, delay: card.delay, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ y: -6, scale: 1.04, transition: { duration: 0.25 } }}
                   className={cn(
-                    "relative z-10 w-[260px] rounded-2xl p-4 cursor-default",
-                    card.align,
+                    "relative z-10 w-[260px] rounded-2xl p-4 cursor-default self-end",
                     isMatrix
                       ? "bg-black/50 border border-green-500/20"
                       : "bg-white/10 border border-white/15"
