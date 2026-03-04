@@ -258,29 +258,39 @@ const HomeCarouselSection: React.FC = () => {
             </div>
 
             {/* Right: Floating glass cards */}
-            <div className="hidden lg:flex flex-col items-center justify-center relative">
-              {/* Feature cards */}
+            <div className="hidden lg:flex flex-col items-end justify-center gap-5 relative min-h-[320px]">
+              {/* Central orb glow */}
+              <motion.div
+                animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.6, 0.4] }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                className={cn(
+                  "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full blur-[60px] pointer-events-none",
+                  isMatrix ? "bg-green-500/30" : "bg-[hsl(262,83%,58%)]/25"
+                )}
+              />
+
+              {/* Feature cards - stacked & aligned */}
               {[
                 {
                   icon: <Zap className="h-5 w-5" />,
                   title: "Velocidade",
                   desc: "Respostas em milissegundos",
                   delay: 0.3,
-                  pos: "top-0 right-0",
+                  align: "self-end",
                 },
                 {
                   icon: <ShieldCheck className="h-5 w-5" />,
                   title: "Segurança",
                   desc: "Dados criptografados",
                   delay: 0.5,
-                  pos: "top-28 left-0",
+                  align: "self-start",
                 },
                 {
                   icon: <FileSearch className="h-5 w-5" />,
                   title: "Precisão",
                   desc: "Dados atualizados em tempo real",
                   delay: 0.7,
-                  pos: "bottom-0 right-8",
+                  align: "self-center",
                 },
               ].map((card, i) => (
                 <motion.div
@@ -290,8 +300,8 @@ const HomeCarouselSection: React.FC = () => {
                   transition={{ duration: 0.6, delay: card.delay, ease: "easeOut" }}
                   whileHover={{ y: -4, scale: 1.03 }}
                   className={cn(
-                    "absolute w-[240px] rounded-2xl p-4 cursor-default",
-                    card.pos,
+                    "relative z-10 w-[260px] rounded-2xl p-4 cursor-default",
+                    card.align,
                     isMatrix
                       ? "bg-black/50 border border-green-500/20"
                       : "bg-white/10 border border-white/15"
@@ -304,7 +314,7 @@ const HomeCarouselSection: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <div
                       className={cn(
-                        "w-10 h-10 rounded-xl flex items-center justify-center",
+                        "w-10 h-10 rounded-xl flex items-center justify-center shrink-0",
                         isMatrix
                           ? "bg-green-500/15 text-green-400"
                           : "bg-secondary/20 text-secondary"
@@ -319,16 +329,6 @@ const HomeCarouselSection: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
-
-              {/* Central orb glow */}
-              <motion.div
-                animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.6, 0.4] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className={cn(
-                  "w-48 h-48 rounded-full blur-[60px]",
-                  isMatrix ? "bg-green-500/30" : "bg-[hsl(262,83%,58%)]/25"
-                )}
-              />
             </div>
           </div>
 
