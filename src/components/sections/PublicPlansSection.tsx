@@ -543,16 +543,7 @@ const PublicPlansSection = () => {
                 className="w-full"
               >
                 <div className="w-full">
-                  {/* Header compacto da categoria */}
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Crown className="h-4 w-4 text-primary" />
-                    <h3 className="text-base sm:text-lg font-bold text-foreground">
-                      Planos {categoryName}
-                    </h3>
-                    <span className="flex items-center justify-center w-5 h-5 bg-primary text-primary-foreground rounded-full text-[10px] font-bold">
-                      {categoryPlans.length}
-                    </span>
-                  </div>
+                  {/* Categoria sem header */}
 
                   <CarouselWithControls
                     categoryPlans={categoryPlans}
