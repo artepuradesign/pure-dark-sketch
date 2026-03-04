@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Package, Mail, Send, ArrowUpRight } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { motion } from "framer-motion";
 
 const ProfessionalFooter = () => {
   const year = new Date().getFullYear();
@@ -35,8 +36,27 @@ const ProfessionalFooter = () => {
   ];
 
   return (
-    <footer className="relative border-t border-border/60 bg-background">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <footer className="relative border-t border-white/10 bg-transparent overflow-hidden">
+      {/* Animated background orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{ x: [0, 40, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-20 -left-20 w-[350px] h-[350px] rounded-full blur-[120px] opacity-20 bg-primary"
+        />
+        <motion.div
+          animate={{ x: [0, -30, 0], y: [0, 20, 0], scale: [1, 1.15, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-20 -right-20 w-[400px] h-[400px] rounded-full blur-[140px] opacity-15 bg-secondary"
+        />
+        <motion.div
+          animate={{ x: [0, 20, 0], y: [0, -15, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[250px] h-[250px] rounded-full blur-[100px] opacity-10 bg-accent"
+        />
+      </div>
+
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top section */}
         <div className="py-14 sm:py-20">
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 lg:grid-cols-12 lg:gap-8">
@@ -97,7 +117,7 @@ const ProfessionalFooter = () => {
           </div>
         </div>
 
-        <Separator className="bg-border/50" />
+        <Separator className="bg-border/30" />
 
         {/* Bottom bar */}
         <div className="py-6 flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -132,7 +152,7 @@ const ProfessionalFooter = () => {
               <a
                 key={social.label}
                 href="#"
-                className="h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all duration-200"
+                className="h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-200"
                 aria-label={social.label}
               >
                 {social.icon}
